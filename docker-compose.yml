@@ -1,6 +1,6 @@
 services:
   backend:
-    image: viktorilyasov/itmo-practice-glossary:latest 
+    image: viktorilyasov/itmo-practice-glossary:latest
     container_name: backend
     ports:
       - "4000:4000"
@@ -9,6 +9,12 @@ services:
       - MONGO_URI=mongodb://mongo:27017/glossary
     depends_on:
       - mongo
+
+  frontend:
+    image: viktorilyasov/itmo-practice-glossary-front:latest
+    container_name: frontend
+    ports:
+      - "3000:80"
 
   mongo:
     image: mongo:6.0

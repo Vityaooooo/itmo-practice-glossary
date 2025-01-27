@@ -14,7 +14,10 @@ import { TNodesLayoutDirection } from "../../types";
 import getLayoutedElements from "./helpers.ts";
 import {
   buttonStyles,
-  controlsStyles
+  controlsStyles,
+  nodeStyles,
+  edgeStyles,
+  edgeLabelStyles,
 } from "../../styles";
 
 export default function GraphContainer() {
@@ -28,8 +31,20 @@ export default function GraphContainer() {
   useEffect(() => {
     if (data) {
       const { nodes: initialNodes, edges: initialEdges } = data;
-      setNodes(initialNodes);
-      setEdges(initialEdges);
+
+      // Добавляем классы для узлов и связей
+      const styledNodes = initialNodes.map((node) => ({
+        ...node,
+        className: nodeStyles,
+      }));
+      const styledEdges = initialEdges.map((edge) => ({
+        ...edge,
+        ...edgeStyles,
+        labelStyle: edgeLabelStyles,
+      }));
+
+      setNodes(styledNodes);
+      setEdges(styledEdges);
     }
   }, [data]);
 
@@ -44,7 +59,7 @@ export default function GraphContainer() {
         fitView();
       });
     },
-    [edges, nodes],
+    [edges, nodes]
   );
 
   if (isLoading) return <div>Загрузка данных...</div>;
@@ -57,6 +72,7 @@ export default function GraphContainer() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       fitView
+      className="react-flow"
     >
       <Panel position="bottom-right" className={controlsStyles}>
         <button className={buttonStyles} onClick={() => onLayout("TB")}>
